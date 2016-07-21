@@ -1,16 +1,15 @@
 import {Injectable} from '@angular/core';
 import { Headers, Http, Response} from '@angular/http';	
-import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/toPromise';
 import {Post} from '../interfaces/post.interface';
 @Injectable()
 export class PostService{
-	private url = 'myjson.json';
+	private url = 'http://localhost:8080/toAngular2/public/api/courses';
 	constructor(private http: Http){ }
 	private extractData(res: Response) {
 	  let body = res.json();
-	  console.log(body.data);
-	  return body.data || null;
+	  console.log(body);
+	  return body || null;
 	}
 	getPosts(): Promise<Post[]>{
 		return this.http.get(this.url)

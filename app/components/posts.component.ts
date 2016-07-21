@@ -19,8 +19,8 @@ import {Post} from '../interfaces/post.interface';
     </form>
 	<ul>
 		<li *ngFor="let post of posts">
-			{{1+1}}
-			<h3>{{post.title}}</h3>
+			<h3>{{post.name}}</h3>
+			<p>{{post.author}}</p>
 		</li>
 	</ul>
 	`,
@@ -35,8 +35,12 @@ export class PostsComponent implements OnInit{
 
 	constructor(private _postService:PostService){}
 	getPosts(){
-		this._postService.getPosts().then(posts => this.posts = posts).catch(error => this.error = error);
+    this._postService.getPosts().then(posts => {
+      this.posts = posts;
+      console.log(this.posts); // not null
+    }).catch(error => this.error = error);
 	}
+	
 	ngOnInit() {		
     	this.getPosts();
     	console.log(this.posts);

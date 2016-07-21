@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 	<br />
 	<button (click)="runClick()">Click</button>
 	<br />
-	<input type="text" [(ngModel)]="note" (keyup.enter)="saySomething($event)">
+	<input type="text" [(ngModel)]="note">
 	{{note}}
 	`
 })
@@ -27,7 +27,4 @@ export class MyComponent{
 		console.log('Youclickkk');
 	}
 
-	saySomething(e){
-		console.log(e.target.value);
-	}
 }

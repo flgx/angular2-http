@@ -40,9 +40,9 @@ import {Http,HTTP_PROVIDERS} from '@angular/http';
 
     	<hr />
     	<h1>TODO (filtering search)</h1>
-    	<input type="text" [(ngModel)]="filterText">
+    	<input type="text" #listFilter (keyup)="0">
     	<ul>
-			<li *ngFor = "let todo of todos | filter:filterText">
+			<li *ngFor = "let todo of todos | filter:listFilter.value">
 				{{todo}}
 			</li>
     	</ul>
