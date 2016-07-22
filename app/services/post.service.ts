@@ -26,15 +26,15 @@ export class PostService{
   	private postData(res: Response) {
   	  console.log('here');
   	  console.log(res);
-	  let body = JSON.parse(res.json());
-	  console.log(body);
+	  let body = res.json();
+	  //console.log(body);
 	  return body;
 	}
   	private post(post: Post): Promise<Post> {
 	    let headers = new Headers({
       'Content-Type': 'application/json'});
 	    return this.http
-	               .post(this.url+'courses', JSON.stringify(post), {headers: headers})
+	               .post(this.url+'courses', post, {headers: headers})
 	               .toPromise()
 	               .then(this.postData)
 	               .catch(this.handleError);

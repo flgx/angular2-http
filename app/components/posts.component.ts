@@ -37,7 +37,7 @@ export class PostsComponent implements OnInit{
     @Input() newPost: Post;
   	@Output() close = new EventEmitter();
     sub: any;
-    navigated = false; // true if navigated here
+    navigated = true; // true if navigated here
 
 	constructor(private _postService:PostService){
 		this.newPost = new Post();
@@ -58,11 +58,12 @@ export class PostsComponent implements OnInit{
 	        .save(this.newPost)
 	        .then(post => {
 	          this.newPost = post; // saved post, w/ id if new
+	          this.getPosts();
+	          this.newPost = new Post();
 	        })
 	        .catch(error => this.error = error); // TODO: Display error message
     }
-    goBack(savedPost: Post = null) {
-	    this.close.emit(savedPost);
-	    if (this.navigated) { window.history.back(); }
+    goBack() {
+	    window.history.back();
     }
 }
