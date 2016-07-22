@@ -1,5 +1,5 @@
 import { Component, OnInit,EventEmitter, Input,OnDestroy, Output } from '@angular/core';
-import { Router }            from '@angular/router';
+//import { Router } from '@angular/router';
 import {PostService} from '../services/post.service';
 import {Post} from '../interfaces/post.interface';
 import {FilterArrayPipe} from '../filter.pipe';
@@ -21,9 +21,14 @@ import {FilterArrayPipe} from '../filter.pipe';
 
     <input type="text" #listFilter (keyup)="0">
 	<ul>
-		<li *ngFor="let post of posts">
+		<li *ngFor="let post of posts" (click)="onSelect(post)" [class.selected]="post === selectedPost">
 			<h3>{{post.name}}</h3>
 			<p>{{post.author}}</p>
+			<div>
+				<label>Id: </label>{{post.id}}
+			</div>			
+			<button (click)="deletePost(post,$event)" value="Delete">Delete</button>			
+			<button (click)="goDetail()" value="View Detail">View Detail</button>
 		</li>
 	</ul>
 	`,
@@ -33,6 +38,9 @@ export class PostsComponent implements OnInit{
 	private posts:Post[];
 	private title:string;
 	private body:string;
+	private selectedPost: Post;
+    private addingHero = false;
+
     error: any;
     @Input() newPost: Post;
   	@Output() close = new EventEmitter();
@@ -48,7 +56,7 @@ export class PostsComponent implements OnInit{
       console.log(this.posts); // not null
     }).catch(error => this.error = error);
 	}
-	
+
 	ngOnInit() {		
     	this.getPosts();
     	console.log(this.posts);
@@ -61,7 +69,24 @@ export class PostsComponent implements OnInit{
 	          this.getPosts();
 	          this.newPost = new Post();
 	        })
-	        .catch(error => this.error = error); // TODO: Display error message
+	       .catch(error => this.error = error); // TODO: Display error message
+    }
+    deletePost(post: Post, event: any) {
+    event.stopPropagation();
+    this._postService
+        .delete(post)
+        .then(res => {
+          this.posts = this.posts.filter(p => p !== post);
+          this.getPosts();
+        })
+        .catch(error => this.error = error);
+    }
+    onSelect(post: Post) {
+	    this.selectedPost = post;
+	    this.addingHero = false;
+    }
+    gotoDetail() {
+    	//this.router.navigate(['/detail', this.selectedPost.id]);
     }
     goBack() {
 	    window.history.back();

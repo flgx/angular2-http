@@ -114,6 +114,10 @@ nav a.router-link-active {
   color: white;
 }
 
+li.selected{
+  background-color: #ECF0F1;
+}
+
 .items li.selected:hover {
   background-color: #BBD8DC;
 }

@@ -12,9 +12,26 @@ export class PostService{
 			.then(this.extractData)
 			.catch(this.handleError);
 	}
+	getPost(id: number) {
+	return this.getPosts()
+	           .then(posts => posts.find(post => post.id === id));
+	}	
 	save(post: Post): Promise<Post>  {
-      return this.post(post);
+	    if (post.id) {
+	       	return this.put(post);
+	    }
+    	return this.post(post);
   	}
+  	delete(post: Post) {
+	    let headers = new Headers();
+	    headers.append('Content-Type', 'application/json');
+	    let url = `${this.url}courses/${post.id}`;
+	    return this.http
+	               .delete(url, {headers: headers})
+	               .toPromise()
+	               .catch(this.handleError);
+    }
+
 	private handleError(error: any) {
 	  console.error('An error occurred', error);
 	  return Promise.reject(error.message || error);
@@ -30,6 +47,16 @@ export class PostService{
 	  //console.log(body);
 	  return body;
 	}
+	private put(post: Post) {
+	    let headers = new Headers();
+	    headers.append('Content-Type', 'application/json');
+	    let url = `${this.url}courses/${post.id}`;
+	    return this.http
+	               .put(url, JSON.stringify(post), {headers: headers})
+	               .toPromise()
+	               .then(() => post)
+	               .catch(this.handleError);
+    }
   	private post(post: Post): Promise<Post> {
 	    let headers = new Headers({
       'Content-Type': 'application/json'});
